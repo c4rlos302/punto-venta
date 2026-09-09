@@ -6,7 +6,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SaleController;
 use App\Livewire\Sales\Create;
-use App\Livewire\Sales\Index;
+
+use App\Livewire\Sales\Index as IndexSales;
+use App\Livewire\Inventory\Index as IndexInventory;
+use App\Livewire\Inventory\Movements;
 
 Route::view('/', 'welcome')->name('home');
 
@@ -25,8 +28,11 @@ Route::put('/categorias/{category}', [CategoryController::class, 'update'])->nam
 Route::delete('/categorias/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
 Route::get('/ventas/nueva', Create::class)->name('sales.create');
-Route::get('/ventas', Index::class)->name('sales.index');
+Route::get('/ventas', IndexSales::class)->name('sales.index');
 Route::get('/ventas/{sale}', [SaleController::class, 'show'])->name('sales.show');
+
+Route::get('/inventario', IndexInventory::class)->name('inventory.index');
+Route::get('/inventario/movimientos', Movements::class)->name('inventory.movements');
 
 Route::get('dashboard', \App\Livewire\Dashboard::class)->middleware(['auth', 'verified'])->name('dashboard');
 

@@ -6,6 +6,7 @@ use App\Models\Product;
 
 use App\Models\Sale;
 use App\Models\SaleItem;
+use App\Services\InventoryService;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 
@@ -77,14 +78,15 @@ class Create extends Component
         });
     }
 
-    public function checkout()
+    public function checkout(InventoryService $inventory)
     {
         if (empty($this->cart)) {
             return;
         }
 
         try {
-            DB::transaction(function () {
+
+            DB::transaction(function () use ($inventory) {
 
                 $sale = Sale::create([
                     'total' => $this->total,
@@ -116,9 +118,11 @@ class Create extends Component
                         'subtotal' => $subtotal,
                     ]);
 
-                    $product->decrement(
-                        'stock',
-                        $item['quantity']
+                    $inventory->removeStock(
+                        $product->id,
+                        $item['quantity'],
+                        "Venta #{$sale->id}",
+                        $sale->id
                     );
                 }
             });

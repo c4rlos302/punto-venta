@@ -30,6 +30,16 @@
                 Historial
             </flux:sidebar.item>
 
+            <flux:sidebar.item icon="archive-box" :href="route('inventory.index')"
+                :current="request()->routeIs('inventory.*')" wire:navigate>
+                Inventario
+            </flux:sidebar.item>
+
+            <flux:sidebar.item icon="clipboard-document-list" :href="route('inventory.movements')"
+                :current="request()->routeIs('inventory.movements')" wire:navigate>
+                Movimientos
+            </flux:sidebar.item>
+
             <flux:sidebar.item icon="cube" :href="route('products.index')"
                 :current="request()->routeIs('products.*')" wire:navigate>
                 Productos
