@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SaleController;
+use App\Livewire\Sales\Create;
+use App\Livewire\Sales\Index;
 
 Route::view('/', 'welcome')->name('home');
 
@@ -21,8 +24,10 @@ Route::get('/categorias/{category}/edit', [CategoryController::class, 'edit'])->
 Route::put('/categorias/{category}', [CategoryController::class, 'update'])->name('categories.update');
 Route::delete('/categorias/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('dashboard', 'dashboard')->name('dashboard');
-});
+Route::get('/ventas/nueva', Create::class)->name('sales.create');
+Route::get('/ventas', Index::class)->name('sales.index');
+Route::get('/ventas/{sale}', [SaleController::class, 'show'])->name('sales.show');
+
+Route::get('dashboard', \App\Livewire\Dashboard::class)->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__ . '/settings.php';
