@@ -88,6 +88,10 @@
                         </th>
 
                         <th class="px-6 py-4 font-semibold text-gray-700 dark:text-gray-300">
+                            Usuario
+                        </th>
+
+                        <th class="px-6 py-4 font-semibold text-gray-700 dark:text-gray-300">
                             Fecha
                         </th>
 
@@ -114,6 +118,22 @@
 
                             <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                 #{{ $sale->id }}
+                            </td>
+
+                            <td class="px-6 py-4">
+                                @if ($sale->user)
+                                    <div class="font-medium text-zinc-900 dark:text-white">
+                                        {{ $sale->user->name }}
+                                    </div>
+
+                                    <div class="text-xs text-zinc-500">
+                                        {{ $sale->user->email }}
+                                    </div>
+                                @else
+                                    <span class="text-zinc-400">
+                                        Usuario no disponible
+                                    </span>
+                                @endif
                             </td>
 
                             <td class="px-6 py-4 text-gray-600 dark:text-gray-400">

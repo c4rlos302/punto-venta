@@ -4,6 +4,7 @@ namespace App\Livewire\Inventory;
 
 use App\Models\Product;
 use App\Services\InventoryService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -89,21 +90,26 @@ class Index extends Component
                     $inventory->addStock(
                         $this->selectedProductId,
                         $this->quantity,
-                        $this->reason ?: null
+                        $this->reason ?: null,
+                        null,
+                        Auth::id()
                     );
                 } elseif ($this->movementType === 'salida') {
 
                     $inventory->removeStock(
                         $this->selectedProductId,
                         $this->quantity,
-                        $this->reason ?: null
+                        $this->reason ?: null,
+                        null,
+                        Auth::id()
                     );
                 } else {
 
                     $inventory->adjustStock(
                         $this->selectedProductId,
                         $this->quantity,
-                        $this->reason ?: null
+                        $this->reason ?: null,
+                        Auth::id()
                     );
                 }
             });

@@ -54,7 +54,7 @@ class Movements extends Component
     public function render()
     {
         $movements = InventoryMovement::query()
-            ->with(['product', 'sale'])
+            ->with(['product', 'sale', 'user'])
 
             ->when($this->search, function ($query) {
                 $query->whereHas('product', function ($query) {

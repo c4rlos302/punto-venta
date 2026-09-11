@@ -8,6 +8,7 @@ class Sale extends Model
 {
     protected $fillable = [
         'total',
+        'user_id',
     ];
 
     public function items()
@@ -18,5 +19,10 @@ class Sale extends Model
     public function inventoryMovements()
     {
         return $this->hasMany(InventoryMovement::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

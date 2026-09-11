@@ -139,6 +139,10 @@
                             Motivo
                         </th>
 
+                        <th class="px-6 py-4 font-semibold text-gray-700 dark:text-gray-300">
+                            Usuario
+                        </th>
+
                     </tr>
 
                 </thead>
@@ -235,6 +239,23 @@
                                     </span>
                                 @endif
 
+                            </td>
+                            
+                            {{-- USUARIO --}}
+                            <td class="px-6 py-4">
+                                @if ($movement->user)
+                                    <div class="font-medium text-zinc-900 dark:text-white">
+                                        {{ $movement->user->name }}
+                                    </div>
+
+                                    <div class="text-xs text-zinc-500">
+                                        {{ $movement->user->email }}
+                                    </div>
+                                @else
+                                    <span class="text-zinc-400">
+                                        Usuario no disponible
+                                    </span>
+                                @endif
                             </td>
 
                         </tr>

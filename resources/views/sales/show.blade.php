@@ -5,16 +5,44 @@
         {{-- Encabezado --}}
         <div class="mb-8 flex items-start justify-between">
 
-            <div>
+            <div class="mb-6 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900">
+                <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-                    Venta #{{ $sale->id }}
-                </h1>
+                    <div>
+                        <p class="text-sm text-zinc-500">
+                            Venta #{{ $sale->id }}
+                        </p>
 
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    {{ $sale->created_at->timezone('America/Mexico_City')->format('d/m/Y H:i') }}
-                </p>
+                        <h1 class="text-2xl font-semibold text-zinc-900 dark:text-white">
+                            Detalle de venta
+                        </h1>
+                    </div>
 
+                    <div class="text-sm text-zinc-500">
+                        {{ $sale->created_at->timezone('America/Mexico_City')->format('d/m/Y H:i') }}
+                    </div>
+
+                </div>
+
+                <div class="mt-6 border-t border-zinc-200 pt-4 dark:border-zinc-700">
+                    <p class="text-sm text-zinc-500">
+                        Realizada por
+                    </p>
+
+                    @if ($sale->user)
+                        <p class="font-medium text-zinc-900 dark:text-white">
+                            {{ $sale->user->name }}
+                        </p>
+
+                        <p class="text-sm text-zinc-500">
+                            {{ $sale->user->email }}
+                        </p>
+                    @else
+                        <p class="text-sm text-zinc-400">
+                            Usuario no disponible
+                        </p>
+                    @endif
+                </div>
             </div>
 
             <a href="{{ route('sales.index') }}" wire:navigate

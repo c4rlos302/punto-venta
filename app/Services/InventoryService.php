@@ -11,7 +11,8 @@ class InventoryService
         int $productId,
         int $quantity,
         ?string $reason = null,
-        ?int $saleId = null
+        ?int $saleId = null,
+        ?int $userId = null
     ): InventoryMovement {
 
         if ($quantity <= 0) {
@@ -37,6 +38,7 @@ class InventoryService
             'stock_after' => $stockAfter,
             'reason' => $reason,
             'sale_id' => $saleId,
+            'user_id' => $userId,
         ]);
     }
 
@@ -44,7 +46,8 @@ class InventoryService
         int $productId,
         int $quantity,
         ?string $reason = null,
-        ?int $saleId = null
+        ?int $saleId = null,
+        ?int $userId = null
     ): InventoryMovement {
 
         if ($quantity <= 0) {
@@ -77,13 +80,15 @@ class InventoryService
             'stock_after' => $stockAfter,
             'reason' => $reason,
             'sale_id' => $saleId,
+            'user_id' => $userId,
         ]);
     }
 
     public function adjustStock(
         int $productId,
         int $newStock,
-        ?string $reason = null
+        ?string $reason = null,
+        ?int $userId = null
     ): InventoryMovement {
 
         if ($newStock < 0) {
@@ -109,6 +114,7 @@ class InventoryService
             'stock_after' => $stockAfter,
             'reason' => $reason,
             'sale_id' => null,
+            'user_id' => $userId,
         ]);
     }
 }

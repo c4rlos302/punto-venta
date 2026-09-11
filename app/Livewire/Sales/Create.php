@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Services\InventoryService;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 
@@ -90,6 +91,7 @@ class Create extends Component
 
                 $sale = Sale::create([
                     'total' => $this->total,
+                    'user_id' => Auth::id(),
                 ]);
 
                 foreach ($this->cart as $item) {
@@ -122,7 +124,8 @@ class Create extends Component
                         $product->id,
                         $item['quantity'],
                         "Venta #{$sale->id}",
-                        $sale->id
+                        $sale->id,
+                        Auth::id()
                     );
                 }
             });

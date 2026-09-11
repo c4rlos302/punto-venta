@@ -45,6 +45,7 @@ class Index extends Component
     public function render()
     {
         $sales = Sale::query()
+            ->with('user')
             ->withCount('items')
 
             ->when($this->search, function ($query) {

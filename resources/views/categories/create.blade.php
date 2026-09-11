@@ -76,10 +76,9 @@
                         Cancelar
                     </a>
 
-                    <button type="submit"
-                        class="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">
+                     <flux:button variant="primary" type="submit">
                         {{ isset($category) ? 'Actualizar categoría' : 'Guardar categoría' }}
-                    </button>
+                    </flux:button>
 
                 </div>
 

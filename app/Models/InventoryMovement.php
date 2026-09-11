@@ -14,6 +14,7 @@ class InventoryMovement extends Model
         'stock_after',
         'reason',
         'sale_id',
+        'user_id',
     ];
 
     public function product()
@@ -24,5 +25,10 @@ class InventoryMovement extends Model
     public function sale()
     {
         return $this->belongsTo(Sale::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

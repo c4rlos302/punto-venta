@@ -153,10 +153,9 @@
                         Cancelar
                     </a>
 
-                    <button type="submit"
-                        class="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                    <flux:button variant="primary" type="submit">
                         {{ isset($product) ? 'Actualizar producto' : 'Guardar producto' }}
-                    </button>
+                    </flux:button>
 
                 </div>
 
