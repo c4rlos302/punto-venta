@@ -6,6 +6,7 @@ use App\Models\Product;
 
 use App\Models\Sale;
 use App\Models\SaleItem;
+use App\PaymentMethod;
 use App\Services\InventoryService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -14,8 +15,10 @@ use Illuminate\Support\Facades\DB;
 class Create extends Component
 {
     public string $search = '';
-
     public array $cart = [];
+
+    public string $paymentMethod = PaymentMethod::CASH->value;
+    public string $paidAmount = '';
 
     public function addProduct(Product $product)
     {
@@ -79,9 +82,44 @@ class Create extends Component
         });
     }
 
+    public function getChangeProperty()
+    {
+        if ($this->paymentMethod !== 'cash') {
+            return 0;
+        }
+
+        $paid = (float) $this->paidAmount;
+
+        return max(0, $paid - $this->total);
+    }
+
     public function checkout(InventoryService $inventory)
     {
         if (empty($this->cart)) {
+            return;
+        }
+
+        $this->validate([
+            'paymentMethod' => [
+                'required',
+                'in:cash,card,transfer',
+            ],
+            'paidAmount' => [
+                'required_if:paymentMethod,cash',
+                'numeric',
+                'min:0',
+            ],
+        ]);
+
+        if (
+            $this->paymentMethod === 'cash'
+            && (float) $this->paidAmount < $this->total
+        ) {
+            $this->addError(
+                'paidAmount',
+                'El pago recibido no puede ser menor al total de la venta.'
+            );
+
             return;
         }
 
@@ -92,6 +130,13 @@ class Create extends Component
                 $sale = Sale::create([
                     'total' => $this->total,
                     'user_id' => Auth::id(),
+                    'payment_method' => $this->paymentMethod,
+                    'paid_amount' => $this->paymentMethod === 'cash'
+                        ? (float) $this->paidAmount
+                        : $this->total,
+                    'change' => $this->paymentMethod === 'cash'
+                        ? $this->change
+                        : 0,
                 ]);
 
                 foreach ($this->cart as $item) {
@@ -132,6 +177,8 @@ class Create extends Component
 
             $this->cart = [];
             $this->search = '';
+            $this->paymentMethod = 'cash';
+            $this->paidAmount = '';
 
             session()->flash(
                 'success',

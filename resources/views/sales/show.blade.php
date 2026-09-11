@@ -1,141 +1,200 @@
 <x-layouts::app :title="'Venta #' . $sale->id">
 
-    <div class="mx-auto max-w-5xl px-6 py-8">
+    @php
+        $paymentMethod = $sale->payment_method->label();
+    @endphp
 
-        {{-- Encabezado --}}
-        <div class="mb-8 flex items-start justify-between">
+    <div class="mx-auto max-w-3xl px-6 py-8">
 
-            <div class="mb-6 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900">
-                <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
-                    <div>
-                        <p class="text-sm text-zinc-500">
-                            Venta #{{ $sale->id }}
-                        </p>
-
-                        <h1 class="text-2xl font-semibold text-zinc-900 dark:text-white">
-                            Detalle de venta
-                        </h1>
-                    </div>
-
-                    <div class="text-sm text-zinc-500">
-                        {{ $sale->created_at->timezone('America/Mexico_City')->format('d/m/Y H:i') }}
-                    </div>
-
-                </div>
-
-                <div class="mt-6 border-t border-zinc-200 pt-4 dark:border-zinc-700">
-                    <p class="text-sm text-zinc-500">
-                        Realizada por
-                    </p>
-
-                    @if ($sale->user)
-                        <p class="font-medium text-zinc-900 dark:text-white">
-                            {{ $sale->user->name }}
-                        </p>
-
-                        <p class="text-sm text-zinc-500">
-                            {{ $sale->user->email }}
-                        </p>
-                    @else
-                        <p class="text-sm text-zinc-400">
-                            Usuario no disponible
-                        </p>
-                    @endif
-                </div>
-            </div>
+        {{-- Acciones --}}
+        <div class="mb-6 flex items-center justify-between print:hidden">
 
             <a href="{{ route('sales.index') }}" wire:navigate
-                class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-zinc-600 dark:text-gray-300 dark:hover:bg-zinc-800">
-                Volver
+                class="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
+                ← Volver al historial
             </a>
+
+            <button type="button" onclick="window.print()"
+                class="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200">
+                Imprimir ticket
+            </button>
 
         </div>
 
-        {{-- Productos --}}
+        {{-- Ticket --}}
         <div
-            class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
+            class="rounded-xl border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-700 dark:bg-zinc-900 print:border-0 print:shadow-none">
 
-            <div class="overflow-x-auto">
+            {{-- Encabezado --}}
+            <div class="border-b border-dashed border-zinc-300 pb-6 text-center dark:border-zinc-700">
 
-                <table class="w-full text-left text-sm">
+                <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">
+                    Punto de Venta
+                </h1>
 
-                    <thead class="border-b border-gray-200 bg-gray-50 dark:border-zinc-800 dark:bg-zinc-800">
+                <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                    Ticket de venta
+                </p>
 
-                        <tr>
+                <p class="mt-4 text-sm text-zinc-700 dark:text-zinc-300">
+                    Venta #{{ str_pad($sale->id, 6, '0', STR_PAD_LEFT) }}
+                </p>
 
-                            <th class="px-6 py-4 font-semibold text-gray-700 dark:text-gray-300">
-                                Producto
-                            </th>
-
-                            <th class="px-6 py-4 text-center font-semibold text-gray-700 dark:text-gray-300">
-                                Cantidad
-                            </th>
-
-                            <th class="px-6 py-4 text-right font-semibold text-gray-700 dark:text-gray-300">
-                                Precio
-                            </th>
-
-                            <th class="px-6 py-4 text-right font-semibold text-gray-700 dark:text-gray-300">
-                                Subtotal
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody class="divide-y divide-gray-100 dark:divide-zinc-700">
-
-                        @foreach ($sale->items as $item)
-                            <tr>
-
-                                <td class="px-6 py-4">
-
-                                    <p class="font-medium text-gray-900 dark:text-white">
-                                        {{ $item->product->name }}
-                                    </p>
-
-                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                        Código: {{ $item->product->code }}
-                                    </p>
-
-                                </td>
-
-                                <td class="px-6 py-4 text-center text-gray-600 dark:text-gray-400">
-                                    {{ $item->quantity }}
-                                </td>
-
-                                <td class="px-6 py-4 text-right text-gray-600 dark:text-gray-400">
-                                    ${{ number_format($item->price, 2) }}
-                                </td>
-
-                                <td class="px-6 py-4 text-right font-semibold text-gray-900 dark:text-white">
-                                    ${{ number_format($item->subtotal, 2) }}
-                                </td>
-
-                            </tr>
-                        @endforeach
-
-                    </tbody>
-
-                </table>
+                <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                    {{ $sale->created_at->timezone('America/Mexico_City')->format('d/m/Y H:i') }}
+                </p>
 
             </div>
 
-            {{-- Total --}}
-            <div class="border-t border-gray-200 bg-gray-50 px-6 py-5 dark:border-zinc-700 dark:bg-zinc-800">
+            {{-- Información de venta --}}
+            <div class="border-b border-dashed border-zinc-300 py-5 dark:border-zinc-700">
 
-                <div class="flex items-center justify-between">
+                <div class="flex justify-between text-sm">
 
-                    <span class="text-base font-medium text-gray-600 dark:text-gray-400">
-                        Total
+                    <span class="text-zinc-500 dark:text-zinc-400">
+                        Vendedor
                     </span>
 
-                    <span class="text-2xl font-bold text-gray-900 dark:text-white">
+                    <span class="font-medium text-zinc-900 dark:text-white">
+                        {{ $sale->user?->name ?? 'Sin usuario' }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            {{-- Productos --}}
+            <div class="border-b border-dashed border-zinc-300 py-5 dark:border-zinc-700">
+
+                <div
+                    class="mb-4 grid grid-cols-12 gap-2 text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+
+                    <div class="col-span-6">
+                        Producto
+                    </div>
+
+                    <div class="col-span-2 text-center">
+                        Cant.
+                    </div>
+
+                    <div class="col-span-2 text-right">
+                        Precio
+                    </div>
+
+                    <div class="col-span-2 text-right">
+                        Subtotal
+                    </div>
+
+                </div>
+
+                <div class="space-y-4">
+
+                    @foreach ($sale->items as $item)
+                        <div class="grid grid-cols-12 gap-2 text-sm">
+
+                            <div class="col-span-6 text-zinc-900 dark:text-white">
+                                {{ $item->product?->name ?? 'Producto eliminado' }}
+                            </div>
+
+                            <div class="col-span-2 text-center text-zinc-600 dark:text-zinc-400">
+                                {{ $item->quantity }}
+                            </div>
+
+                            <div class="col-span-2 text-right text-zinc-600 dark:text-zinc-400">
+                                ${{ number_format($item->price, 2) }}
+                            </div>
+
+                            <div class="col-span-2 text-right font-medium text-zinc-900 dark:text-white">
+                                ${{ number_format($item->subtotal, 2) }}
+                            </div>
+
+                        </div>
+                    @endforeach
+
+                </div>
+
+            </div>
+
+            {{-- Totales --}}
+            <div class="border-b border-dashed border-zinc-300 py-5 dark:border-zinc-700">
+
+                <div class="flex justify-between text-sm">
+
+                    <span class="text-zinc-500 dark:text-zinc-400">
+                        Subtotal
+                    </span>
+
+                    <span class="text-zinc-900 dark:text-white">
                         ${{ number_format($sale->total, 2) }}
                     </span>
 
                 </div>
+
+                <div class="mt-3 flex justify-between text-lg font-bold">
+
+                    <span class="text-zinc-900 dark:text-white">
+                        Total
+                    </span>
+
+                    <span class="text-zinc-900 dark:text-white">
+                        ${{ number_format($sale->total, 2) }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            {{-- Pago --}}
+            <div class="border-b border-dashed border-zinc-300 py-5 dark:border-zinc-700">
+
+                <div class="flex justify-between text-sm">
+
+                    <span class="text-zinc-500 dark:text-zinc-400">
+                        Método de pago
+                    </span>
+
+                    <span class="font-medium text-zinc-900 dark:text-white">
+                        {{ $paymentMethod }}
+                    </span>
+
+                </div>
+
+                <div class="mt-3 flex justify-between text-sm">
+
+                    <span class="text-zinc-500 dark:text-zinc-400">
+                        Pago recibido
+                    </span>
+
+                    <span class="text-zinc-900 dark:text-white">
+                        ${{ number_format($sale->paid_amount, 2) }}
+                    </span>
+
+                </div>
+
+                <div class="mt-3 flex justify-between text-sm">
+
+                    <span class="text-zinc-500 dark:text-zinc-400">
+                        Cambio
+                    </span>
+
+                    <span class="font-medium text-zinc-900 dark:text-white">
+                        ${{ number_format($sale->change, 2) }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            {{-- Pie del ticket --}}
+            <div class="pt-6 text-center">
+
+                <p class="text-sm font-medium text-zinc-900 dark:text-white">
+                    Gracias por su compra
+                </p>
+
+                <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                    Conserve este ticket como comprobante.
+                </p>
 
             </div>
 

@@ -21,7 +21,7 @@
             </flux:sidebar.item>
 
             <flux:sidebar.item icon="shopping-cart" :href="route('sales.create')"
-                :current="request()->routeIs('sales.*')" wire:navigate>
+                :current="request()->routeIs('sales.create')" wire:navigate>
                 Nueva venta
             </flux:sidebar.item>
 

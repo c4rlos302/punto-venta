@@ -177,6 +177,74 @@
 
                     </div>
 
+                    {{-- Pago --}}
+                    <div class="border-t border-zinc-200 p-6 dark:border-zinc-700">
+
+                        <div class="space-y-4">
+
+                            {{-- Método de pago --}}
+                            <div>
+                                <label for="paymentMethod"
+                                    class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                                    Método de pago
+                                </label>
+
+                                <select id="paymentMethod" wire:model.live="paymentMethod"
+                                    class="mt-2 block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white">
+                                    <option value="cash">Efectivo</option>
+                                    <option value="card">Tarjeta</option>
+                                    <option value="transfer">Transferencia</option>
+                                </select>
+
+                                @error('paymentMethod')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+
+                            {{-- Pago recibido --}}
+                            @if ($paymentMethod === 'cash')
+                                <div>
+
+                                    <label for="paidAmount"
+                                        class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                                        Pago recibido
+                                    </label>
+
+                                    <input id="paidAmount" type="number" step="0.01" min="0"
+                                        wire:model.live="paidAmount" placeholder="0.00"
+                                        class="mt-2 block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white">
+
+                                    @error('paidAmount')
+                                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
+                                            {{ $message }}
+                                        </p>
+                                    @enderror
+
+                                </div>
+
+
+                                {{-- Cambio --}}
+                                <div
+                                    class="flex items-center justify-between rounded-lg bg-zinc-50 px-4 py-3 dark:bg-zinc-800">
+
+                                    <span class="text-sm text-zinc-600 dark:text-zinc-400">
+                                        Cambio
+                                    </span>
+
+                                    <span class="text-lg font-semibold text-zinc-900 dark:text-white">
+                                        ${{ number_format($this->change, 2) }}
+                                    </span>
+
+                                </div>
+                            @endif
+
+                        </div>
+
+                    </div>
+
                     {{-- Total --}}
                     <div class="mt-6 border-t border-gray-200 pt-4 dark:border-zinc-700">
 

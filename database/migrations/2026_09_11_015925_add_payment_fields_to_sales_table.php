@@ -6,23 +6,32 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('sales', function (Blueprint $table) {
-            //
+
+            $table->string('payment_method')
+                ->default('cash')
+                ->after('total');
+
+            $table->decimal('paid_amount', 10, 2)
+                ->default(0)
+                ->after('payment_method');
+
+            $table->decimal('change', 10, 2)
+                ->default(0)
+                ->after('paid_amount');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('sales', function (Blueprint $table) {
-            //
+            $table->dropColumn([
+                'payment_method',
+                'paid_amount',
+                'change',
+            ]);
         });
     }
 };
