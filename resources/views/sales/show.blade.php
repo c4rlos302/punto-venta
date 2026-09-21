@@ -14,10 +14,28 @@
                 ← Volver al historial
             </a>
 
-            <button type="button" onclick="window.print()"
-                class="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200">
-                Imprimir ticket
-            </button>
+            <div class="flex items-center gap-3">
+
+                <button type="button" onclick="window.print()"
+                    class="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200">
+                    Imprimir ticket
+                </button>
+
+                @if (auth()->user()->isAdmin() && $sale->status !== 'cancelled')
+                    <form method="POST" action="{{ route('sales.cancel', $sale) }}"
+                        onsubmit="return confirm('¿Estás seguro de que deseas cancelar esta venta? El inventario será restaurado.');">
+
+                        @csrf
+
+                        <button type="submit"
+                            class="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700">
+                            Cancelar venta
+                        </button>
+
+                    </form>
+                @endif
+
+            </div>
 
         </div>
 
@@ -43,6 +61,13 @@
                 <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
                     {{ $sale->created_at->timezone('America/Mexico_City')->format('d/m/Y H:i') }}
                 </p>
+
+                @if ($sale->status === 'cancelled')
+                    <div
+                        class="mt-4 inline-flex rounded-full bg-red-100 px-3 py-1 text-sm font-medium text-red-700 dark:bg-red-900/30 dark:text-red-400">
+                        Venta cancelada
+                    </div>
+                @endif
 
             </div>
 

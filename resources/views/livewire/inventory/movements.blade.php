@@ -223,24 +223,33 @@
                             {{-- MOTIVO --}}
                             <td class="px-6 py-4">
 
-                                @if ($movement->sale)
-                                    <a href="{{ route('sales.show', $movement->sale) }}" wire:navigate
-                                        class="font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400">
-                                        Venta #{{ $movement->sale->id }}
-                                    </a>
-                                @elseif ($movement->reason)
-                                    <span class="text-gray-600 dark:text-gray-400">
-                                        {{ $movement->reason }}
-                                    </span>
-                                @else
-                                    <span class="text-gray-400">
-                                        Sin motivo
+                                <div class="space-y-1">
 
-                                    </span>
-                                @endif
+                                    @if ($movement->sale)
+                                        @if ($movement->reason && $movement->reason !== 'Venta #' . $movement->sale->id)
+                                            <div class="text-sm text-gray-600 dark:text-gray-400">
+                                                {{ $movement->reason }}
+                                            </div>
+                                        @endif
+
+                                        <a href="{{ route('sales.show', $movement->sale) }}" wire:navigate
+                                            class="text-sm font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400">
+                                            Venta #{{ $movement->sale->id }}
+                                        </a>
+                                    @elseif ($movement->reason)
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">
+                                            {{ $movement->reason }}
+                                        </span>
+                                    @else
+                                        <span class="text-sm text-gray-400">
+                                            Sin motivo
+                                        </span>
+                                    @endif
+
+                                </div>
 
                             </td>
-                            
+
                             {{-- USUARIO --}}
                             <td class="px-6 py-4">
                                 @if ($movement->user)

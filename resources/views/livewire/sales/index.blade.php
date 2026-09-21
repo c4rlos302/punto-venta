@@ -103,6 +103,10 @@
                             Total
                         </th>
 
+                        <th class="px-6 py-4 text-center font-semibold text-gray-700 dark:text-gray-300">
+                            Estado
+                        </th>
+
                         <th class="px-6 py-4 text-right font-semibold text-gray-700 dark:text-gray-300">
                             Acción
                         </th>
@@ -147,6 +151,22 @@
 
                             <td class="px-6 py-4 text-right font-semibold text-gray-900 dark:text-white">
                                 ${{ number_format($sale->total, 2) }}
+                            </td>
+
+                            <td class="px-4 py-4">
+
+                                @if ($sale->status === 'cancelled')
+                                    <span
+                                        class="inline-flex rounded-full bg-red-100 px-2.5 py-1 text-xs font-medium text-red-700 dark:bg-red-900/30 dark:text-red-400">
+                                        Cancelada
+                                    </span>
+                                @else
+                                    <span
+                                        class="inline-flex rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                        Completada
+                                    </span>
+                                @endif
+
                             </td>
 
                             <td class="px-6 py-4 text-right">

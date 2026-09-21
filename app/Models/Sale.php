@@ -13,6 +13,9 @@ class Sale extends Model
         'payment_method',
         'paid_amount',
         'change',
+        'status',
+        'cancelled_at',
+        'cancelled_by',
     ];
 
     protected function casts(): array
@@ -22,6 +25,7 @@ class Sale extends Model
             'paid_amount' => 'decimal:2',
             'change' => 'decimal:2',
             'payment_method' => PaymentMethod::class,
+            'cancelled_at' => 'datetime',
         ];
     }
 
@@ -38,5 +42,10 @@ class Sale extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    
+    public function cancelledBy()
+    {
+        return $this->belongsTo(User::class, 'cancelled_by');
     }
 }

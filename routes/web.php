@@ -19,6 +19,7 @@ use App\Livewire\Inventory\Movements;
 use App\Livewire\Users\Index as IndexUsers;
 use App\Livewire\Users\Create as CreateUsers;
 use App\Livewire\Users\Edit;
+use App\Models\Sale;
 
 Route::view('/', 'welcome')->name('home');
 
@@ -34,6 +35,7 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/ventas', IndexSales::class)->name('sales.index');
     Route::get('/ventas/nueva', CreateSales::class)->name('sales.create');
     Route::get('/ventas/{sale}', [SaleController::class, 'show'])->name('sales.show');
+    Route::post('/ventas/{sale}/cancelar', [SaleController::class, 'cancel'])->middleware('admin')->name('sales.cancel');
 
     Route::get('/inventario', IndexInventory::class)->name('inventory.index');
     Route::get('/inventario/movimientos', Movements::class)->name('inventory.movements');
