@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ReportExportController;
 
 use App\Livewire\Products\Index as IndexProducts;
 use App\Livewire\Categories\Index as IndexCategories;
@@ -19,7 +20,9 @@ use App\Livewire\Inventory\Movements;
 use App\Livewire\Users\Index as IndexUsers;
 use App\Livewire\Users\Create as CreateUsers;
 use App\Livewire\Users\Edit;
-use App\Models\Sale;
+
+use App\Livewire\Reports\Sales as SalesReport;
+use App\Livewire\Reports\Inventory as InventoryReport;
 
 Route::view('/', 'welcome')->name('home');
 
@@ -53,6 +56,11 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/categorias/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
     Route::put('/categorias/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categorias/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+    Route::get('/reportes/ventas', SalesReport::class)->name('reports.sales');
+    Route::get('/reportes/ventas/exportar', [ReportExportController::class, 'sales'])->name('reports.sales.export');
+    Route::get('/reportes/inventario', InventoryReport::class)->name('reports.inventory');
+    Route::get('/reportes/inventario/exportar', [ReportExportController::class, 'inventory'])->name('reports.inventory.export');
 });
 
 require __DIR__ . '/settings.php';

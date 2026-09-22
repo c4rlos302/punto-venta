@@ -96,7 +96,7 @@
                         </th>
 
                         <th class="px-6 py-4 font-semibold text-gray-700 dark:text-gray-300">
-                            Productos
+                            Unidades
                         </th>
 
                         <th class="px-6 py-4 text-right font-semibold text-gray-700 dark:text-gray-300">
@@ -144,9 +144,8 @@
                                 {{ $sale->created_at->timezone('America/Mexico_City')->format('d/m/Y H:i') }}
                             </td>
 
-                            <td class="px-6 py-4 text-gray-600 dark:text-gray-400">
-                                {{ $sale->items_count }}
-                                {{ $sale->items_count === 1 ? 'producto' : 'productos' }}
+                            <td class="px-6 py-4 text-center text-gray-600 dark:text-gray-400">
+                                {{ $sale->items_sum_quantity }}
                             </td>
 
                             <td class="px-6 py-4 text-right font-semibold text-gray-900 dark:text-white">

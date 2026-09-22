@@ -46,7 +46,7 @@ class Index extends Component
     {
         $sales = Sale::query()
             ->with('user')
-            ->withCount('items')
+            ->withSum('items', 'quantity')
 
             ->when($this->search, function ($query) {
                 $query->where(function ($query) {
