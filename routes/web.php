@@ -38,6 +38,8 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/ventas', IndexSales::class)->name('sales.index');
     Route::get('/ventas/nueva', CreateSales::class)->name('sales.create');
     Route::get('/ventas/{sale}', [SaleController::class, 'show'])->name('sales.show');
+    Route::get('/ventas/{sale}/ticket', [SaleController::class, 'ticket'])->name('sales.ticket');
+    Route::get('/ventas/{sale}/print-data', [SaleController::class, 'printData'])->name('sales.print-data');
     Route::post('/ventas/{sale}/cancelar', [SaleController::class, 'cancel'])->middleware('admin')->name('sales.cancel');
 
     Route::get('/inventario', IndexInventory::class)->name('inventory.index');
@@ -61,6 +63,7 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/reportes/ventas/exportar', [ReportExportController::class, 'sales'])->name('reports.sales.export');
     Route::get('/reportes/inventario', InventoryReport::class)->name('reports.inventory');
     Route::get('/reportes/inventario/exportar', [ReportExportController::class, 'inventory'])->name('reports.inventory.export');
+
 });
 
 require __DIR__ . '/settings.php';

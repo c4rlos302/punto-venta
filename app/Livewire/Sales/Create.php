@@ -124,8 +124,7 @@ class Create extends Component
         }
 
         try {
-
-            DB::transaction(function () use ($inventory) {
+            $sale = DB::transaction(function () use ($inventory) {
 
                 $sale = Sale::create([
                     'total' => $this->total,
@@ -173,17 +172,17 @@ class Create extends Component
                         Auth::id()
                     );
                 }
+
+                return $sale;
             });
 
+            // Limpiar la venta actual
             $this->cart = [];
             $this->search = '';
-            $this->paymentMethod = 'cash';
+            $this->paymentMethod = PaymentMethod::CASH->value;
             $this->paidAmount = '';
 
-            session()->flash(
-                'success',
-                'Venta registrada correctamente.'
-            );
+            return redirect()->route('sales.show', $sale);
         } catch (\Throwable $e) {
 
             session()->flash(

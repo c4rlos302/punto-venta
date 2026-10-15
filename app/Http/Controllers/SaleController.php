@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sale;
 use App\Services\InventoryService;
+use App\Services\TicketService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -25,7 +26,8 @@ class SaleController extends Controller
         return view('sales.show', compact('sale'));
     }
 
-    public function cancel(Sale $sale, InventoryService $inventory) {
+    public function cancel(Sale $sale, InventoryService $inventory)
+    {
         if ($sale->status === 'cancelled') {
             return back()->with(
                 'error',
@@ -76,5 +78,21 @@ class SaleController extends Controller
                 $e->getMessage()
             );
         }
+    }
+
+    public function printData(
+        Sale $sale,
+        TicketService $ticketService
+    ) {
+        return response()->json(
+            $ticketService->data($sale)
+        );
+    }
+
+    public function ticket(Sale $sale)
+    {
+        $sale->load(['items.product', 'user']);
+
+        return view('sales.ticket', compact('sale'));
     }
 }
